@@ -1,0 +1,15 @@
+networks:
+  rexasi-tracker:
+    name: "rexasi-tracker"
+    external: true
+
+
+services:
+  custom-tracker:
+    container_name: your-custom-tracker-name
+    image: name-of-your-custom-tracker-image
+  networks:
+    - rexasi-tracker
+
+  #you can add other services, remember to you alwasy use the `rexasi-tracker` network
+  

@@ -1,0 +1,26 @@
+version: '3'
+
+tasks:
+
+  build:
+    cmds:
+      - '{{.DOCKER_COMPOSE_CMD}} -f ./example/docker-compose-lidar.yaml build'
+      - '{{.DOCKER_COMPOSE_CMD}} -f ./example/docker-compose-rgbd.yaml build'
+
+  setup:
+    cmds:
+      - task example:build
+
+  start-lidar:
+    cmds:
+      - xhost local:root
+      - '{{.DOCKER_COMPOSE_CMD}} -f example/docker-compose-lidar.yaml up'
+    env:
+     EXPERIMENT: s1
+
+  start-rgbd:
+    cmds:
+      - xhost local:root
+      - '{{.DOCKER_COMPOSE_CMD}} -f example/docker-compose-rgbd.yaml up'
+    env:
+     EXPERIMENT: s2
