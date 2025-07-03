@@ -1,2 +1,5 @@
 sequences
 sequences-test
+**/gt_prediction_association.csv
+**/tracker_output.csv
+evaluation-data-test/trackers/
