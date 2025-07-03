@@ -1,0 +1,27 @@
+version: '3'
+
+dotenv: ['.env', '.env.example']
+
+tasks:
+  setup: 
+    desc: Setup the project
+    cmds:
+      - '[ ! -f .env ] && cp .env.example .env || true'
+
+  build:
+    desc: Build the project
+    cmds:
+      - docker build . -t {{.DOCKER_IMAGE}}
+      - docker build -f Dockerfile.evaluation -t {{.DOCKER_EVALUATION_IMAGE}} ..
+
+  run-evaluation:
+    desc: Run the evaluation
+    cmds:
+      - docker compose run --rm --name ploomber -e BAG_REPO=/data rexasipro-script ploomber build --force --entry-point pipeline.tracker.yaml
+      - docker compose run --rm --name evaluation rexasipro-evaluation
+
+  run-evaluation-test:
+    desc: Run the evaluation
+    cmds:
+      - docker compose run --rm --name ploomber -e BAG_REPO=/data rexasipro-script-test ploomber build --force --entry-point pipeline.tracker.yaml
+      - docker compose run --rm --name evaluation rexasipro-evaluation-test

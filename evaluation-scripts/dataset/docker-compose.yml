@@ -1,0 +1,44 @@
+networks:
+  rexasipro-dataset:
+    name: rexasipro-dataset
+    driver: bridge
+
+services:
+  rexasipro-script:
+    image: ${DOCKER_IMAGE}
+    build:
+      context: .
+    container_name: rexasipro-script
+    volumes:
+      - ${DATA_VOLUME}:/data
+      - ${SRC_VOLUME}:/app
+    networks:
+      - rexasipro-dataset
+    ipc: host
+
+  rexasipro-script-test:
+    image: ${DOCKER_IMAGE}
+    build:
+      context: .
+    container_name: rexasipro-script
+    volumes:
+      - ${DATA_VOLUME_TEST}:/data
+      - ${SRC_VOLUME}:/app
+    networks:
+      - rexasipro-dataset
+    ipc: host
+
+  rexasipro-evaluation:
+    image: ${DOCKER_EVALUATION_IMAGE}
+    build:
+      context: .
+    volumes:
+      - ${DATA_VOLUME}:/app/TrackEval/data
+  
+
+  rexasipro-evaluation-test:
+    image: ${DOCKER_EVALUATION_IMAGE}
+    build:
+      context: .
+    volumes:
+      - ${DATA_VOLUME_TEST}:/app/TrackEval/data

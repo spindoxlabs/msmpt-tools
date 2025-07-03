@@ -1,0 +1,17 @@
+# Content of pipeline.yaml
+tasks:
+  - source: 6-gt-prediction-association.py
+    name: gt-prediction-association-[[sample]]
+    static_analysis: disable
+    grid:
+      sample: lib.get_datasets::get_sample_list
+    product:
+      nb: output/gt-prediction-association-[[sample]].ipynb
+
+  - source: 7-change-id-prediction.py
+    name: change-id-prediction-[[sample]]
+    static_analysis: disable
+    grid:
+      sample: lib.get_datasets::get_sample_list
+    product:
+      nb: output/change-id-prediction-[[sample]].ipynb
