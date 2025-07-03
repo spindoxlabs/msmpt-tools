@@ -1,6 +1,5 @@
 __pycache__
 data
-.env
 .vscode-server/
 launch.json
 output
