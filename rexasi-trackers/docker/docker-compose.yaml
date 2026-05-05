@@ -1,0 +1,28 @@
+networks:
+  rexasi-tracker:
+    name: "rexasi-tracker"
+    external: true
+
+services:
+  rexasi-tracker:
+    container_name: rexasi-tracker
+    image: rexasi-tracker/tracker
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: ros2 launch rexasi_tracker launch.py
+    environment:
+      PYTHONUNBUFFERED: 1
+    volumes:
+      - ../data:/data
+    networks:
+      - rexasi-tracker
+    runtime: nvidia
+    privileged: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1 # alternatively, use `count: all` for all GPUs
+              capabilities: [gpu]

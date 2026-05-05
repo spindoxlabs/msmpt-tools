@@ -1,0 +1,48 @@
+version: '3'
+
+tasks:
+  setup-trackers:
+    dir: ./rexasi-trackers
+    cmds:
+      - task setup
+
+  setup-evaluation:
+    dir: ./evaluation-scripts/dataset
+    cmds:
+      - task build
+
+
+  setup:
+    desc: Setup the project
+    cmds:
+      - task setup-trackers
+      - task setup-evaluation
+
+  run-trackers-test:
+    dir: ./rexasi-trackers
+    cmds:
+      - task start-test
+      
+  run-evaluation-test:
+    dir: ./evaluation-scripts/dataset
+    cmds:
+      - task run-evaluation-test
+
+  run-lidar-tracker:
+    dir: ./rexasi-trackers
+    cmds:
+      - task start-multiple-run-lidar
+
+  run-rgbd-tracker:
+    dir: ./rexasi-trackers
+    cmds:
+      - task start-multiple-run-rgbd
+
+  run-evaluation:
+    dir: ./evaluation-scripts/dataset
+    cmds:
+      - task run-evaluation
+  
+
+
+

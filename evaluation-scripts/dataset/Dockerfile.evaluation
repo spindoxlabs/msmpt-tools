@@ -1,0 +1,10 @@
+# context must be set to the root of the repository
+FROM python:3.7
+
+WORKDIR /app/TrackEval
+COPY TrackEval/minimum_requirements.txt .
+RUN pip install -r minimum_requirements.txt
+RUN pip install matplotlib==3.2.1
+COPY TrackEval .
+
+CMD ["python", "scripts/run_mot_challenge.py", "--BENCHMARK", "people_tracker", "--SPLIT_TO_EVAL", "test", "--USE_PARALLEL", "False", "--NUM_PARALLEL_CORES", "1", "--DO_PREPROC", "False"]

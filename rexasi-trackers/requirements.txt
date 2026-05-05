@@ -1,0 +1,6 @@
+git+https://github.com/tryolabs/norfair.git@master
+pydantic
+transforms3d
+numpy<1.24
+cerberus
+pyrealsense2

@@ -1,0 +1,33 @@
+networks:
+  rexasi-tracker:
+    name: "rexasi-tracker"
+    external: true
+
+
+include:
+  - ${TRACKER_COMPOSE_FILE}
+services:
+  player:
+    depends_on:
+      - custom-tracker
+    container_name: player
+    image: rexasi-tracker/rosbag
+    build:
+      context: ..
+      dockerfile: example/Dockerfile
+    command: bash -c "sleep 10 && ros2 bag play /sequences/${EXPERIMENT}"
+    volumes:
+      - ../${INPUT_DIRECTORY}:/sequences
+    networks:
+      - rexasi-tracker
+  logger:
+    container_name: logger
+    image: rexasi-tracker/logger
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.logger
+    command: ros2 launch rexasi_logger launch.py
+    volumes:
+      - ../../tracker-output-tmp:/data
+    networks:
+      - rexasi-tracker

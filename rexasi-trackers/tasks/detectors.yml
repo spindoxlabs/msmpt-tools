@@ -1,0 +1,19 @@
+version: '3'
+
+tasks:
+
+  build:
+    cmds:
+      - '{{.DOCKER_COMPOSE_CMD}} -f ./docker/docker-compose.detectors.yaml build'
+
+  start:
+    cmds:
+      - '{{.DOCKER_COMPOSE_CMD}} -f ./docker/docker-compose.detectors.yaml up'
+
+  stop:
+    cmds:
+      - '{{.DOCKER_COMPOSE_CMD}} -f ./docker/docker-compose.detectors.yaml down'
+
+  setup:
+    cmds:
+      - task detectors:build
