@@ -49,4 +49,28 @@ task setup
 task run-trackers-test
 task run-evaluation-test
 ```
+
 The output of the evaluation will be saved in `evaluation-data-test/trackers`.
+
+## HOW TO RUN THE BENCHMARK ON A CUSTOM TRACKER
+
+To benchmark a ROS 2 compatible people tracker, follow these steps:
+
+* write a Docker-Compose file that runs your tracker. The tracker must read the RGBD cameras and the lidar data from the dedicated ROS 2 topics that are listed in the following table:
+
+| Topic | Message Type | Description |
+|---|---|---|
+| `/camera_<i>/color/camera_info` | `sensor_msgs/msg/CameraInfo` | RGB intrinsic parameters of camera i=1, 2 |
+| `/camera_<i>/color/image_raw` | `sensor_msgs/msg/Image` | RGB images of camera i=1, 2 |
+| `/camera_<i>/depth/camera_info` | `sensor_msgs/msg/CameraInfo` | Depth intrinsic parameters of camera i=1, 2 |
+| `/camera_<i>/depth/image_rect_raw` | `sensor_msgs/msg/Image` | Depth data from camera i=1, 2 |
+| `/camera_<i>/gyro/sample` | `sensor_msgs/msg/Imu` | IMU of camera i=1, 2 |
+| `/camera_<i>/accel/sample` | `sensor_msgs/msg/Imu` | Accelerometer of camera i=1, 2 |
+| `/scan` | `sensor_msgs/msg/LaserScan` | Laser scans |
+
+* the tracker must publish the data on a dedicated topic named `/tracks`. The messages published must be of type `rexasi-trackers/ros/rexasi_tracker_msgs/msg/Tracks.msg`. Note that to run the benchmark the mandatory fields are `identities` and `centers`. The former is the list of the track IDs while the latter is the list of their current positions;
+* in `rexasi-trackers/.env`, set the variable `TRACKER_COMPOSE_FILE` to the absolute path of the Docker-Compose file that runs your tracker;
+* run `task run-custom-tracker` to execute the tracker against all the sequences;
+* run `task run-evaluation` to evaluate the results of the tracker.
+
+The results of the evaluation will be saved in `evaluation-data/trackers`, where `pedestrian_plot.pdf` reports a summary on all sequences and `pedestrian_detailed.csv` contains the details for each sequence.
